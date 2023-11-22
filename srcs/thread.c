@@ -24,10 +24,10 @@ void	*fn_thread(void *arg)
 	if (!even_que)
 	{
 		if (env->philo_size > 80 && env->philo_size < 150)
-			usleep(1000);
-		else if (env->philo_size >= 150)
 			usleep(2000);
-		usleep(100);
+		else if (env->philo_size >= 150)
+			usleep(3000);
+		usleep(400);
 	}
 	while (env->dead_print == 0 && env->cycle_end[philo_id - 1]) 
 	{

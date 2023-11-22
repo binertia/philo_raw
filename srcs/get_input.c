@@ -24,6 +24,8 @@ static int	valid_input(t_env *env)
 	if ((int)env->philo_size == -2 || (long)env->max_eat == -2 || (long)env->time_to_die == -2
 		|| (long)env->time_to_eat == -2 || (long)env->time_to_sleep == -2 )
 		return (2);
+	if (env->philo_size > 1000)
+		return (2);
 	return (0);
 }
 
