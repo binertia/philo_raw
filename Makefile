@@ -1,37 +1,42 @@
-NAME			=	philo
-CC				=	cc
-CFLAGS			=	-Wall -Wextra -Werror
-INCLUDES_DIR	=	includes/
-INCLUDES		=	$(addprefix $(INCLUDES_DIR), philosophers.h)
-SRCS_DIR		=	srcs/
-SRCS			=	$(addprefix $(SRCS_DIR), \
-					alone_philo.c \
-					atonum.c \
-					fork_cycle.c \
-					free_exit.c \
-					get_input.c \
-					main.c \
-					print.c \
-					thread.c \
-					time.c \
-					)
+NAME         = philo
+CC           = cc
+CFLAGS       = -Wall -Wextra -Werror
+LIBS         = -pthread
 
-OBJS			=	$(SRCS:%.c=%.o)
+INCLUDES_DIR = includes/
+INCLUDES_FILES = philosophers.h
+INCLUDES     = $(addprefix $(INCLUDES_DIR), $(INCLUDES_FILES))
 
-.PHONY: 			all clean fclean re
+SRCS_DIR     = srcs/
+SRCS_FILES   = alone_philo.c \
+               atonum.c \
+               fork_cycle.c \
+               free_exit.c \
+               get_input.c \
+               main.c \
+               print.c \
+               thread.c \
+               time.c
 
-all:				$(NAME)
+SRCS         = $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
-$(NAME): 			$(OBJS)
-					$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
+OBJS_DIR     = objs/
+OBJS         = $(addprefix $(OBJS_DIR), $(notdir $(SRCS:.c=.o)))
 
-%.o: 				%.c	$(INCLUDES)
-					$(CC) $(CFLAGS) -I$(INCLUDES_DIR) -c $< -o $@
+.PHONY: all clean fclean re
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(LIBS) $^ -o $@
+
+$(OBJS_DIR)%.o: $(SRCS_DIR)%.c
+	$(CC) $(CFLAGS) -I$(INCLUDES_DIR) -c $< -o $@
 
 clean:
-					rm -rf $(OBJS)
+	rm -rf $(OBJS)
 
-fclean: 			clean
-					rm -rf $(NAME)
+fclean: clean
+	rm -rf $(NAME)
 
-re: 				fclean all
+re: fclean all

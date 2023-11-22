@@ -22,12 +22,27 @@ void	*fn_thread(void *arg)
 	set_philo(env, &philo_id, &end_time, &ate);
 	even_que = (philo_id % 2);
 	if (!even_que)
-		usleep(50);
+	{
+		if (env->philo_size > 80 && env->philo_size < 150)
+			usleep(1000);
+		else if (env->philo_size >= 150)
+			usleep(2000);
+		usleep(100);
+	}
 	while (env->dead_print == 0 && env->cycle_end[philo_id - 1]) 
 	{
 		pthread_mutex_lock(&env->check_fork[philo_id - 1]);
-		if (env->fork[philo_id - 1] == 1 && env->fork[philo_id % env->philo_size] == 1)
-			philo_take_fork(env, philo_id, &end_time, &ate);
+		if (env->fork[philo_id - 1] == 1 )
+		{
+			pthread_mutex_lock(&env->check_fork[philo_id % env->philo_size]);
+			if (env->fork[philo_id % env->philo_size] == 1)
+				philo_take_fork(env, philo_id, &end_time, &ate);
+			else
+			{
+				pthread_mutex_unlock(&env->check_fork[philo_id % env->philo_size]);
+				pthread_mutex_unlock(&env->check_fork[philo_id - 1]);
+			}
+		}
 		else
 			pthread_mutex_unlock(&env->check_fork[philo_id - 1]);
 		pthread_mutex_lock(&env->dead_notice);
