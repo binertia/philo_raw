@@ -27,7 +27,7 @@ OBJS         = $(addprefix $(OBJS_DIR), $(notdir $(SRCS:.c=.o)))
 
 all: 			$(NAME)
 
-$(NAME):		$(OBJS) | $(OBJS_DIR)
+$(NAME):		$(OBJS)
 				$(CC) $(CFLAGS) $(LIBS) $^ -o $@
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJS_DIR)

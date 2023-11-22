@@ -30,8 +30,8 @@ static int	check_input(char *s)
 
 static int	valid_input(t_env *env)
 {
-	if (env->philo_size < 1 || env->time_to_die < 5
-		||env->time_to_eat < 5 || env->time_to_sleep < 5 || env->max_eat < 1)
+	if (env->philo_size == 0 || env->time_to_die < 5
+		||env->time_to_eat < 5 || env->time_to_sleep < 5 || env->max_eat == 0)
 		return (2);
 	if ((int)env->philo_size == -2 || (int)env->max_eat == -2
 		|| (long)env->time_to_eat == -2 || (long)env->time_to_sleep == -2

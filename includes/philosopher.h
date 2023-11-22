@@ -10,11 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
-#include <unistd.h>
-#include <pthread.h>
+#ifndef PHILOSOPHER_H
+# define PHILOSOPHER_H
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/time.h>
+# include <unistd.h>
+# include <pthread.h>
 
 typedef struct s_env
 {
@@ -60,3 +62,5 @@ int				get_input(char *arr[], int ac, t_env *env);
 int				ft_malloc_error_exit(t_env *env);
 int				init_env(t_env *env);
 int				ft_error_exit(t_env *env, char *s);
+
+#endif
