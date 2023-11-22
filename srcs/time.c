@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   time.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ksongchu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/22 20:52:59 by ksongchu          #+#    #+#             */
+/*   Updated: 2023/11/22 20:53:01 by ksongchu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philosopher.h"
 
 unsigned long	get_time(void)
@@ -10,7 +22,7 @@ unsigned long	get_time(void)
 
 unsigned long	get_dif_time(unsigned long time)
 {
-	long temp;
+	long	temp;
 
 	temp = (long)get_time() - time;
 	if (temp < 0)
@@ -18,7 +30,7 @@ unsigned long	get_dif_time(unsigned long time)
 	return (temp);
 }
 
-void ft_usleep_till(unsigned long time, t_env *env)
+void	ft_usleep_till(unsigned long time, t_env *env)
 {
 	while (get_time() < time && env->dead_print == 0)
 		usleep(200);

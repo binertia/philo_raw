@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_input.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ksongchu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/22 20:46:08 by ksongchu          #+#    #+#             */
+/*   Updated: 2023/11/22 20:46:13 by ksongchu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philosopher.h"
 
 static int	check_input(char *s)
@@ -9,7 +21,7 @@ static int	check_input(char *s)
 		if (*s >= '0' && *s <= '9')
 			s++;
 		else
-			break;
+			break ;
 	}
 	if (*s)
 		return (2);
@@ -18,18 +30,19 @@ static int	check_input(char *s)
 
 static int	valid_input(t_env *env)
 {
-	if (env->philo_size == 0 || env->time_to_die == 0
-		||env->time_to_eat == 0 || env->time_to_sleep == 0 || env->max_eat == 0)
+	if (env->philo_size < 1 || env->time_to_die < 5
+		||env->time_to_eat < 5 || env->time_to_sleep < 5 || env->max_eat < 1)
 		return (2);
-	if ((int)env->philo_size == -2 || (long)env->max_eat == -2 || (long)env->time_to_die == -2
-		|| (long)env->time_to_eat == -2 || (long)env->time_to_sleep == -2 )
+	if ((int)env->philo_size == -2 || (int)env->max_eat == -2
+		|| (long)env->time_to_eat == -2 || (long)env->time_to_sleep == -2
+		|| (long)env->time_to_die == -2)
 		return (2);
 	if (env->philo_size > 1000)
 		return (2);
 	return (0);
 }
 
-static int input_error_exit(char *s)
+static int	input_error_exit(char *s)
 {
 	printf("%s", s);
 	return (2);
@@ -47,12 +60,13 @@ int	get_input(char *arr[], int ac, t_env *env)
 		env->max_eat = ft_atoi_no_protect(arr[5]);
 	}
 	else
-		env->max_eat = -1; // no optaional for arr[5]
+		env->max_eat = -1;
 	env->philo_size = ft_atoi_no_protect(arr[1]);
 	env->time_to_die = ft_atoul_no_protect(arr[2]);
 	env->time_to_eat = ft_atoul_no_protect(arr[3]);
 	env->time_to_sleep = ft_atoul_no_protect(arr[4]);
 	if (valid_input(env))
-		return (input_error_exit("Error : input value error -- value is out of bound\n"));
+		return (input_error_exit("Error : input value error \
+			-- value is out of bound\n"));
 	return (0);
 }

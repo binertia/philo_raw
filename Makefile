@@ -25,18 +25,21 @@ OBJS         = $(addprefix $(OBJS_DIR), $(notdir $(SRCS:.c=.o)))
 
 .PHONY: all clean fclean re
 
-all: $(NAME)
+all: 			$(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(LIBS) $^ -o $@
+$(NAME):		$(OBJS) | $(OBJS_DIR)
+				$(CC) $(CFLAGS) $(LIBS) $^ -o $@
 
-$(OBJS_DIR)%.o: $(SRCS_DIR)%.c
-	$(CC) $(CFLAGS) -I$(INCLUDES_DIR) -c $< -o $@
+$(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJS_DIR)
+				$(CC) $(CFLAGS) -I$(INCLUDES_DIR) -c $< -o $@
+
+$(OBJS_DIR):
+				mkdir -p objs
 
 clean:
-	rm -rf $(OBJS)
+				rm -rf $(OBJS)
 
 fclean: clean
-	rm -rf $(NAME)
+				rm -rf $(NAME)
 
 re: fclean all

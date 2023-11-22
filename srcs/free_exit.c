@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_exit.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ksongchu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/22 20:42:34 by ksongchu          #+#    #+#             */
+/*   Updated: 2023/11/22 20:42:36 by ksongchu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philosopher.h"
 
 static void	ft_mutex_destroy(t_env *env)
@@ -39,7 +51,7 @@ void	clean_out(t_env *env)
 	ft_free_malloc(env);
 }
 
-int ft_malloc_error_exit(t_env *env)
+int	ft_malloc_error_exit(t_env *env)
 {
 	ft_free_malloc(env);
 	printf("Error : malloc error");

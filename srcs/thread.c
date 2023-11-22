@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   thread.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ksongchu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/22 20:49:19 by ksongchu          #+#    #+#             */
+/*   Updated: 2023/11/22 20:52:24 by ksongchu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philosopher.h"
 
 static void	set_philo(t_env *env, int *id, unsigned long *end_time, int *ate)
@@ -10,13 +22,38 @@ static void	set_philo(t_env *env, int *id, unsigned long *end_time, int *ate)
 	pthread_mutex_unlock(&env->init_id);
 }
 
+static void	thread_logic(t_env *env, int id, unsigned long *end_time, int *ate)
+{
+	while (env->dead_print == 0 && env->cycle_end[id - 1])
+	{
+		pthread_mutex_lock(&env->check_fork[id - 1]);
+		if (env->fork[id - 1] == 1)
+		{
+			pthread_mutex_lock(&env->check_fork[id % env->philo_size]);
+			if (env->fork[id % env->philo_size] == 1)
+				philo_take_fork(env, id, end_time, ate);
+			else
+			{
+				pthread_mutex_unlock(&env->check_fork[id % env->philo_size]);
+				pthread_mutex_unlock(&env->check_fork[id - 1]);
+			}
+		}
+		else
+			pthread_mutex_unlock(&env->check_fork[id - 1]);
+		pthread_mutex_lock(&env->dead_notice);
+		philo_cycle(env, ate, id, *end_time);
+		if (env->dead_found || env->dead_print)
+			break ;
+	}
+}
+
 void	*fn_thread(void *arg)
 {
-	int		philo_id;
-	int		ate;
-	int		even_que;
-	t_env	*env;
-	unsigned long end_time;
+	int				philo_id;
+	int				ate;
+	int				even_que;
+	t_env			*env;
+	unsigned long	end_time;
 
 	env = (t_env *)arg;
 	set_philo(env, &philo_id, &end_time, &ate);
@@ -29,38 +66,19 @@ void	*fn_thread(void *arg)
 			usleep(3000);
 		usleep(400);
 	}
-	while (env->dead_print == 0 && env->cycle_end[philo_id - 1]) 
-	{
-		pthread_mutex_lock(&env->check_fork[philo_id - 1]);
-		if (env->fork[philo_id - 1] == 1 )
-		{
-			pthread_mutex_lock(&env->check_fork[philo_id % env->philo_size]);
-			if (env->fork[philo_id % env->philo_size] == 1)
-				philo_take_fork(env, philo_id, &end_time, &ate);
-			else
-			{
-				pthread_mutex_unlock(&env->check_fork[philo_id % env->philo_size]);
-				pthread_mutex_unlock(&env->check_fork[philo_id - 1]);
-			}
-		}
-		else
-			pthread_mutex_unlock(&env->check_fork[philo_id - 1]);
-		pthread_mutex_lock(&env->dead_notice);
-		philo_cycle(env, &ate, philo_id, end_time);
-		if (env->dead_found || env->dead_print)
-			break;
-	}
+	thread_logic(env, philo_id, &end_time, &ate);
 	return (arg);
 }
 
-int init_env(t_env *env)
+int	init_env(t_env *env)
 {
 	int	i;
 
 	env->philo = (pthread_t *)malloc(sizeof(pthread_t) * env->philo_size);
 	env->fork = (int *)malloc(sizeof(int) * env->philo_size);
 	env->cycle_end = (int *)malloc(sizeof(int) * env->philo_size);
-	env->check_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * env->philo_size);
+	env->check_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) \
+		* env->philo_size);
 	if (!env->philo || !env->fork || !env->cycle_end)
 		return (ft_malloc_error_exit(env));
 	env->dead_found = 0;
@@ -76,6 +94,6 @@ int init_env(t_env *env)
 		pthread_mutex_init(&env->check_fork[i], NULL);
 		i++;
 	}
-    env->base_time = get_time(); 
+	env->base_time = get_time();
 	return (0);
 }

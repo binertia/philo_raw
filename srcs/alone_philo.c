@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   alone_philo.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ksongchu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/22 20:31:35 by ksongchu          #+#    #+#             */
+/*   Updated: 2023/11/22 20:31:37 by ksongchu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philosopher.h"
 
 void	*fn_single_thread(void *arg)
 {
-	t_env *env;
+	t_env	*env;
 
 	env = (t_env *)arg;
 	ft_usleep_till(env->time_to_die + get_time(), env);
