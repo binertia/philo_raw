@@ -42,7 +42,7 @@ static void	thread_logic(t_env *env, int id, unsigned long *end_time, int *ate)
 			pthread_mutex_unlock(&env->check_fork[id - 1]);
 		pthread_mutex_lock(&env->dead_notice);
 		philo_cycle(env, ate, id, *end_time);
-		if (env->dead_found || env->dead_print)
+		if (env->dead_print)
 			break ;
 	}
 }

@@ -73,8 +73,7 @@ static void	run_cycle(t_env *env, unsigned long end_time, int *ate, int id)
 		ft_usleep_till(env->time_to_sleep + get_time(), env);
 	}
 	pthread_mutex_lock(&env->dead_notice);
-	if (env->dead_found == 0 && env->dead_print == 0
-		&& get_dif_time(end_time) != 0)
+	if (env->dead_print == 0 && get_dif_time(end_time) != 0)
 		printf("\033[0;37m%lu %d is thinking\033[0m\n", \
 			get_dif_time(env->base_time), id);
 	pthread_mutex_unlock(&env->dead_notice);

@@ -46,7 +46,10 @@ int	main(int ac, char *av[])
 	t_env	env;
 
 	if (ac < 5 || ac > 6)
+	{
+		write(STDERR_FILENO, "Error : bad input\n", 18);
 		return (2);
+	}
 	if (get_input(av, ac, &env) != 0)
 		return (2);
 	if (start_thread(&env) != 0)
