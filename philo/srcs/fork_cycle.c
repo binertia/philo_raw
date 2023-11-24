@@ -32,11 +32,8 @@ void	philo_take_fork(t_env *env, int id, unsigned long *end_time, int *ate)
 	dead = 0;
 	remove_fork(env, id);
 	if (env->time_to_eat > get_dif_time(*end_time))
-	{
-		env->dead_found = 1;
 		dead = 1;
-	}
-	if (env->dead_print == 0)
+	if (env->stop_work == 0)
 		print_eating(env, id, ate, *end_time);
 	if (dead)
 		print_dead(env, id, *end_time);
@@ -54,13 +51,12 @@ static void	run_cycle(t_env *env, unsigned long end_time, int *ate, int id)
 {
 	if (env->time_to_sleep + get_time() > end_time)
 	{
-		env->dead_found = 1;
 		pthread_mutex_unlock(&env->dead_notice);
 		ft_usleep_till(end_time, env);
 		pthread_mutex_lock(&env->dead_notice);
-		if (env->dead_print == 0)
+		if (env->stop_work == 0)
 		{
-			env->dead_print = 1;
+			env->stop_work = 1;
 			printf("\033[0;31m%lu %d has dead\033[0m\n", \
 				get_dif_time(env->base_time), id);
 		}
@@ -73,7 +69,7 @@ static void	run_cycle(t_env *env, unsigned long end_time, int *ate, int id)
 		ft_usleep_till(env->time_to_sleep + get_time(), env);
 	}
 	pthread_mutex_lock(&env->dead_notice);
-	if (env->dead_print == 0 && get_dif_time(end_time) != 0)
+	if (env->stop_work == 0 && get_dif_time(end_time) != 0)
 		printf("\033[0;37m%lu %d is thinking\033[0m\n", \
 			get_dif_time(env->base_time), id);
 	pthread_mutex_unlock(&env->dead_notice);
@@ -82,8 +78,8 @@ static void	run_cycle(t_env *env, unsigned long end_time, int *ate, int id)
 
 void	philo_cycle(t_env *env, int *ate, int id, unsigned long end_time)
 {
-	if (*ate == 1 && env->dead_print == 0 && env->cycle_end[id - 1]
-		&& env->dead_found == 0 && end_time > get_time())
+	if (*ate == 1 && env->stop_work == 0 && env->cycle_end[id - 1]
+		&& end_time > get_time())
 	{
 		printf("\033[0;34m%lu %d is sleeping\033[0m\n", \
 			get_dif_time(env->base_time), id);

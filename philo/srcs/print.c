@@ -28,10 +28,10 @@ void	print_eating(t_env *env, int id, int *ate, unsigned long end_time)
 void	print_dead(t_env *env, int id, unsigned long end_time)
 {
 	pthread_mutex_lock(&env->dead_notice);
-	if (env->dead_print == 0)
+	if (env->stop_work == 0)
 	{
 		ft_usleep_till(end_time, env);
-		env->dead_print = 1;
+		env->stop_work = 1;
 		printf("\033[0;31m%lu %d has dead\n\033[0m", \
 			get_dif_time(env->base_time), id);
 	}

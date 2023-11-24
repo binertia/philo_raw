@@ -5,6 +5,9 @@ dead_cases=(
     "3 200 100 100"
     "10 200 100 101"
     "30 100 200 50"
+	"100 100 100 100"
+	"200 120 60 60"
+	"100 101 100 100"
 	"123 321 123 3210"
 	"10 5 5 5"
 )
@@ -22,13 +25,14 @@ success_cases=(
 	"11 601 200 200 60"
 	"1000 2000 100 100 20"
 	"1000 1000 100 100 100"
+	"200 200 60 60 50"
 )
 
 # Execute the program with each test case
 for dead_case in "${dead_cases[@]}"; do
     echo "Running test case: $dead_case"
     echo "---------------------"
-	output=$(./philo $dead_case)
+	output=$(./philo_1 $dead_case)
 	echo "$output" | tail -n 6
     echo "---------------------"
     echo ""
@@ -37,7 +41,7 @@ done
 for error_case in "${error_cases[@]}"; do
     echo "Running test case: $error_case"
     echo "---------------------"
-    ./philo $error_case
+    ./philo_1 $error_case
     echo "---------------------"
     echo ""
 done
@@ -45,7 +49,7 @@ done
 for success_case in "${success_cases[@]}"; do
 	echo "Running test case: $success_case"
 	echo "--------------------"
-	output=$(./philo $success_case)
+	output=$(./philo_1 $success_case)
 	eat=$(echo "$output" | grep eat | wc -l)
 	sleep=$(echo "$output" | grep sleep | wc -l)
 	think=$(echo "$output" | grep think | wc -l)

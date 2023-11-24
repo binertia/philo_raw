@@ -37,8 +37,7 @@ typedef struct s_env
 	int					*cycle_end;
 
 	int					philo_id_iter;
-	int					dead_found;
-	int					dead_print;
+	int					stop_work;
 }		t_env;
 
 unsigned long	ft_atoul_no_protect(char *s);

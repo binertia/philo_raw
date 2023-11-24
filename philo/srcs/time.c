@@ -32,6 +32,6 @@ unsigned long	get_dif_time(unsigned long time)
 
 void	ft_usleep_till(unsigned long time, t_env *env)
 {
-	while (get_time() < time && env->dead_print == 0)
+	while (get_time() < time && env->stop_work == 0)
 		usleep(200);
 }

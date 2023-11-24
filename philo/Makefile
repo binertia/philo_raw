@@ -1,7 +1,7 @@
 NAME         = philo
 CC           = cc
 CFLAGS       = -Wall -Wextra -Werror
-LIBS         = -pthread
+LIBS         = -lpthread
 
 INCLUDES_DIR = includes/
 INCLUDES_FILES = philosophers.h

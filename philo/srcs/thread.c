@@ -24,7 +24,7 @@ static void	set_philo(t_env *env, int *id, unsigned long *end_time, int *ate)
 
 static void	thread_logic(t_env *env, int id, unsigned long *end_time, int *ate)
 {
-	while (env->dead_print == 0 && env->cycle_end[id - 1])
+	while (env->stop_work == 0 && env->cycle_end[id - 1])
 	{
 		pthread_mutex_lock(&env->check_fork[id - 1]);
 		if (env->fork[id - 1] == 1)
@@ -42,7 +42,7 @@ static void	thread_logic(t_env *env, int id, unsigned long *end_time, int *ate)
 			pthread_mutex_unlock(&env->check_fork[id - 1]);
 		pthread_mutex_lock(&env->dead_notice);
 		philo_cycle(env, ate, id, *end_time);
-		if (env->dead_print)
+		if (env->stop_work)
 			break ;
 	}
 }
@@ -81,9 +81,8 @@ int	init_env(t_env *env)
 		* env->philo_size);
 	if (!env->philo || !env->fork || !env->cycle_end)
 		return (ft_malloc_error_exit(env));
-	env->dead_found = 0;
 	env->philo_id_iter = 1;
-	env->dead_print = 0;
+	env->stop_work = 0;
 	pthread_mutex_init(&env->init_id, NULL);
 	pthread_mutex_init(&env->dead_notice, NULL);
 	i = 0;
