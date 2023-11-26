@@ -17,10 +17,13 @@ void	print_eating(t_env *env, int id, int *ate, unsigned long end_time)
 	*ate = 1;
 	if (get_time() >= end_time)
 		return ;
+	usleep(1);
 	printf("\033[0;33m%lu %d has taken a fork\n\033[0m", \
 		get_dif_time(env->base_time), id);
+	usleep(1);
 	printf("\033[0;33m%lu %d has taken a fork\n\033[0m", \
 		get_dif_time(env->base_time), id);
+	usleep(1);
 	printf("\033[0;32m%lu %d is eating\n\033[0m", \
 		get_dif_time(env->base_time), id);
 }
@@ -32,6 +35,7 @@ void	print_dead(t_env *env, int id, unsigned long end_time)
 	{
 		ft_usleep_till(end_time, env);
 		env->stop_work = 1;
+		usleep(1);
 		printf("\033[0;31m%lu %d has dead\n\033[0m", \
 			get_dif_time(env->base_time), id);
 	}

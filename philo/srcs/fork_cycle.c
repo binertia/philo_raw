@@ -57,6 +57,7 @@ static void	run_cycle(t_env *env, unsigned long end_time, int *ate, int id)
 		if (env->stop_work == 0)
 		{
 			env->stop_work = 1;
+			usleep(1);
 			printf("\033[0;31m%lu %d has dead\033[0m\n", \
 				get_dif_time(env->base_time), id);
 		}
@@ -70,8 +71,11 @@ static void	run_cycle(t_env *env, unsigned long end_time, int *ate, int id)
 	}
 	pthread_mutex_lock(&env->dead_notice);
 	if (env->stop_work == 0 && get_dif_time(end_time) != 0)
+	{
+		usleep(1);
 		printf("\033[0;37m%lu %d is thinking\033[0m\n", \
 			get_dif_time(env->base_time), id);
+	}
 	pthread_mutex_unlock(&env->dead_notice);
 	usleep(100);
 }
@@ -81,6 +85,7 @@ void	philo_cycle(t_env *env, int *ate, int id, unsigned long end_time)
 	if (*ate == 1 && env->stop_work == 0 && env->cycle_end[id - 1]
 		&& end_time > get_time())
 	{
+		usleep(1);
 		printf("\033[0;34m%lu %d is sleeping\033[0m\n", \
 			get_dif_time(env->base_time), id);
 		run_cycle(env, end_time, ate, id);

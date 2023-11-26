@@ -18,6 +18,7 @@ void	*fn_single_thread(void *arg)
 
 	env = (t_env *)arg;
 	ft_usleep_till(env->time_to_die + get_time(), env);
+	usleep(1);
 	printf("\033[0;31m%lu 1 is dead\n\033[0m", get_dif_time(env->base_time));
 	return (arg);
 }
